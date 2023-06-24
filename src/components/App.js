@@ -1,73 +1,30 @@
+import React, { useState } from 'react';
 
-import React from "react";
-import './../styles/App.css';
-import AutoComplete from "./AutoComplete";
+const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
-const App = () => {
-  const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
+function AutoComplete() {
+  const [inputValue, setInputValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInputValue(value);
+    if (value.length > 0) {
+      const filteredSuggestions = fruits.filter(fruit => fruit.toLowerCase().startsWith(value.toLowerCase()));
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  };
 
   return (
     <div>
-        <h1>Search item</h1>
-        <AutoComplete fruits={fruits}/>
+      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <ul>
+        {suggestions.map(suggestion => <li key={suggestion}>{suggestion}</li>)}
+      </ul>
     </div>
-  )
+  );
 }
 
-export default App
-
-// import React, { useState } from 'react';
-
-// const Autocomplete = ({ suggestions }) => {
-//   const [inputValue, setInputValue] = useState('');
-//   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  
-//   const handleInputChange = (event) => {
-//     const userInput = event.target.value;
-//     setInputValue(userInput);
-    
-//     // Filter the suggestions based on the user input
-//     const filtered = suggestions.filter(
-//       (fruit) =>
-//         fruit.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-//     );
-//     setFilteredSuggestions(filtered);
-//   };
-  
-//   const handleSuggestionClick = (suggestion) => {
-//     setInputValue(suggestion);
-//     setFilteredSuggestions([]);
-//   };
-  
-//   return (
-//     <div>
-//       <input
-//         type="text"
-//         value={inputValue}
-//         onChange={handleInputChange}
-//         placeholder="Search for a fruit..."
-//       />
-//       <ul>
-//         {filteredSuggestions.map((suggestion, index) => (
-//           <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-//             {suggestion}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// const App = () => {
-//   const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig","orange","aam"];
-  
-//   return (
-//     <div>
-//       <h1>Autocomplete Example</h1>
-//       <Autocomplete suggestions={fruits} />
-//     </div>
-//   );
-// };
-
-// export default App;
-
+export default AutoComplete;
