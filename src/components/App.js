@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
 function AutoComplete() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    setSuggestions(fruits);
+  }, [fruits]);
 
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
-    if (value.length > 0) {
-      const filteredSuggestions = fruits.filter(fruit => fruit.toLowerCase().startsWith(value.toLowerCase()));
-      setSuggestions(filteredSuggestions);
-    } else {
-      setSuggestions([]);
-    }
+
+    const filteredSuggestions = fruits.filter((fruit) =>
+      fruit.toLowerCase().startsWith(value.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
   };
 
   return (
     <div>
       <input type="text" value={inputValue} onChange={handleInputChange} />
       <ul>
-        {suggestions.map(suggestion => <li key={suggestion}>{suggestion}</li>)}
+        {suggestions.map((suggestion) => (
+          <li key={suggestion}>{suggestion}</li>
+        ))}
       </ul>
     </div>
   );
